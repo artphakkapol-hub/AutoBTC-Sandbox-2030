@@ -1,24 +1,27 @@
-name: AutoBTC 24/7 Sandbox
+name: AutoBTC 24/7 Telegram Report
 
 on:
   schedule:
-    - cron: '0 * * * *'  # รันทุกๆ ต้นชั่วโมง (เปลี่ยนได้กริบๆ)
-  workflow_dispatch:      # เพิ่มปุ่มให้กดรันเองได้จากมือถือ
+    - cron: '0 * * * *'  # 🐯 รันทุกๆ ต้นชั่วโมงอัตโนมัติ (เช่น 14:00, 15:00)
+  workflow_dispatch:      # 🐯 เพิ่มปุ่มให้กดรันเองได้จากมือถือเท่ๆ
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install ccxt asyncio
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests ccxt asyncio
+          # 🐯 ติดตั้ง requests เพื่อให้ส่งเข้า Telegram ได้กริบๆ!
 
       - name: Run Bot
         run: python bot.py
