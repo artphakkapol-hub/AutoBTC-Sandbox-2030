@@ -1,2 +1,24 @@
-import ccxt.pro as ccxt  # นี่คือ "กุญแจ" เอาไว้ไขเข้าบ้าน Binance/Bitkub เพื่อดูราคา
-import asyncio            # นี่คือ "น้ำมันเครื่อง i5" ทำให้บอททำงานหลายอย่างพร้อมกันได้
+name: AutoBTC 24/7 Sandbox
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # รันทุกๆ ต้นชั่วโมง (เปลี่ยนได้กริบๆ)
+  workflow_dispatch:      # เพิ่มปุ่มให้กดรันเองได้จากมือถือ
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install ccxt asyncio
+
+      - name: Run Bot
+        run: python bot.py
